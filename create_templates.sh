@@ -205,3 +205,37 @@ create_template 995 "temp-kali-rolling" "kali-linux-kali-rolling-cloud-genericcl
 wget "https://download.freebsd.org/releases/VM-IMAGES/14.2-RELEASE/amd64/Latest/FreeBSD-14.2-RELEASE-amd64-BASIC-CLOUDINIT.ufs.qcow2.xz"
 xz -d -v "FreeBSD-14.2-RELEASE-amd64-BASIC-CLOUDINIT.ufs.qcow2.xz"
 create_template 999 "temp-freebsd-14.2" "FreeBSD-14.2-RELEASE-amd64-BASIC-CLOUDINIT.ufs.qcow2"
+
+
+## FreeBSD 15.0 RELEASE
+wget "https://download.freebsd.org/releases/VM-IMAGES/15.0-RELEASE/amd64/Latest/FreeBSD-15.0-RELEASE-amd64-BASIC-CLOUDINIT.ufs.qcow2.xz"
+xz -d -v "FreeBSD-15.0-RELEASE-amd64-BASIC-CLOUDINIT.ufs.qcow2.xz"
+create_template 1020 "temp-freebsd-15.0" "FreeBSD-15.0-RELEASE-amd64-BASIC-CLOUDINIT.ufs.qcow2"
+
+## ============================================================
+## Gentoo Linux (rolling, cloud-init)
+## ============================================================
+
+## Gentoo Linux (rolling, cloud-init)
+## Note: Gentoo uses a dated filename ao we resolve the latest from
+##       the autobuilds index before downloading.
+## Default user: root (cloud-init configures credentials on boot)
+## Requires UEFI -- set bios=ovmf when cloning if needed 
+GENTOO_BASE="https://distfiles.gentoo.org/releases/amd64/autobuilds/current-di-amd64-cloudinit"
+GENTOO_LATEST=$(wget -qO- "${GENTOO_BASE}/latest-di-amd64-cloudinit.txt" \
+    | grep -v '^#' | awk '{print $1}')
+wget "${GENTOO_BASE}/${GENTOO_LATEST}"
+create_template 1000 "temp-gentoo" "${GENTOO_LATEST}"
+
+
+
+## ============================================================
+## openSUSE MicroOS
+## ============================================================
+
+## openSUSE MicroOS (rolling, immutable container/server OS)
+## Note: MicroOS is an immutable OS with transactional updates.
+##       It uses cloud-init via the OpenStack datasource.
+##       Default user: root (cloud-init) 
+wget "https://download.opensuse.org/tumbleweed/appliances/openSUSE-MicroOS.x86_64-OpenStack-Cloud.qcow2"
+create_template 1010 "temp-opensuse-microos" "openSUSE-MicroOS.x86_64-OpenStack-Cloud.qcow2"
